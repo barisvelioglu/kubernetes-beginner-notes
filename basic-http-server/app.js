@@ -10,7 +10,7 @@ const app = express();
 app.get('/', (req, res) => {
   console.log(`Received request for URL: ${req.url}`);
   res.writeHead(200);
-  res.end(`Hello, World!\nHostname: ${os.hostname()}\n`);
+  res.end(`Hello, World!\RequestUrl: ${req.url}\nHostname: ${os.hostname()}\n`);
 });
 
 app.listen(port);
