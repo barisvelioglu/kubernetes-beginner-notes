@@ -1,0 +1,13 @@
+{
+  "name": "velioglu_hello_world",
+  "version": "3.0.0",
+  "description": "Node.js Hello World API on Docker",
+  "author": "Baris Velioglu",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
