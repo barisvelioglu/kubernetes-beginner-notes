@@ -35,7 +35,7 @@ items:
       name: hello-ingress
     spec:
       rules:
-        - host: helloworld.com
+        - host: hello-world.com
           http:
             paths:
               - path: /

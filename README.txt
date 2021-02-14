@@ -5,9 +5,9 @@
 1- $ sudo nano /etc/hosts
 
 2- # add these lines:
-    {MasterNodeIPAddress} helloworld.com
-    {MasterNodeIPAddress} hellodashboard.com
-    {MasterNodeIPAddress} helloregistry.com
+    {MasterNodeIPAddress} hello-world.com
+    {MasterNodeIPAddress} hello-dashboard.com
+    {MasterNodeIPAddress} hello-registry.com
 
 3- # Pushing to this insecure registry may fail in some versions of Docker unless the daemon is explicitly configured to trust this registry. To address this we need to edit /etc/docker/daemon.json and add:
     {
@@ -71,7 +71,7 @@
 
 
 ----------------------------------------------------------------------------------------
--- Publish Kubernetes Docker Private Repository (on HOST COMPUTER)
+-- Publish To Kubernetes Docker Private Repository (on HOST COMPUTER)
 ----------------------------------------------------------------------------------------
 
 1- docker build . -t helloregistry.com/docker_web_app_velioglu:arm64_v7

@@ -5,7 +5,7 @@ metadata:
   namespace: container-registry
 spec:
   rules:
-    - host: helloregistry.com
+    - host: hello-registry.com
       http:
         paths:
           - backend:
