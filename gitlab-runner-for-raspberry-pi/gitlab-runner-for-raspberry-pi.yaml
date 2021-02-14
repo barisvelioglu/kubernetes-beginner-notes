@@ -22,7 +22,7 @@ gitlabUrl: http://192.168.1.200:31000/
 ## be retrieved from your GitLab Instance.
 ## ref: https://docs.gitlab.com/ce/ci/runners/README.html
 ##
-runnerRegistrationToken: "your token here"
+runnerRegistrationToken: "quP5f8sCdd_8QzhZHPzY"
 
 ## The Runner Token for adding new Runners to the GitLab Server. This must
 ## be retrieved from your GitLab Instance. It is token of already registered runner.
@@ -368,11 +368,9 @@ tolerations:
 
 ## list of hosts and IPs that will be injected into the pod's hosts file
 hostAliases:
-  []
-  # Example:
-  # - ip: "127.0.0.1"
-  #   hostnames:
-  #   - "foo.local"
+  - ip: "192.168.1.200"
+    hostnames:
+      - "hello-gitlab.com"
   #   - "bar.local"
   # - ip: "10.1.2.3"
   #   hostnames:

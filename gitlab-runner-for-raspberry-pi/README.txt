@@ -1,0 +1,1 @@
+$ helm install gitlab-runner61 --namespace gitlab-managed-apps -f gitlab-runner-for-raspberry-pi.yaml gitlab/gitlab-runner
