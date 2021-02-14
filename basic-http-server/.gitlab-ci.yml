@@ -1,0 +1,25 @@
+image: arm64v8/node
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  tags:
+    - development
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+testing_testing:
+  stage: test
+  script: echo "This is a test"
+  tags:
+    - development
