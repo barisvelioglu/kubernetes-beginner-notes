@@ -33,14 +33,14 @@
 
 2 - $ sudo nano /etc/netplan/00-installer-config.yaml
 
-    network:
-      version: 2
-      ethernets:
-        eth0:
-          addresses: [{static-ip-you-want-to-set}}/24]
-          gateway4: 192.168.1.1
-          nameservers: 
-            addresses: [8.8.8.8, 8.8.4.4]
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses: [{static-ip-you-want-to-set}}/24]
+      gateway4: 192.168.1.1
+      nameservers: 
+        addresses: [8.8.8.8, 8.8.4.4]
 
 3- $ sudo netplan try
 
@@ -48,6 +48,58 @@
 
 5- $ sudo reboot
 
+
+----------------------------------------------------------------------------------------
+---  Install MicroK8S on Ubuntu - Raspberry PI
+----------------------------------------------------------------------------------------
+
+0- sudo apt-get update
+
+1- First of all, change hostname of Computer
+   $ sudo nano /etc/hostname
+
+2- Edit /boot/firmware/cmdline.txt and add two cgroup property
+   $ sudo nano /boot/firmware/cmdline.txt
+   cgroup_enable=memory cgroup_memory=1
+
+3- $ sudo swapoff -a
+
+4- $ sudo reboot
+
+5- $ sudo snap install microk8s --classic --stable
+
+6- $ sudo usermod -a -G microk8s ubuntu
+   $ sudo chown -f -R ubuntu ~/.kube
+
+7- $ sudo microk8s.start
+
+8- Need to wait for a while....... (sometimes a few minutes)
+
+9- $ sudo apt-get install iptables-persistent
+   $ sudo iptables -P FORWARD ACCEPT
+   $ sudo iptables -A FORWARD -j ACCEPT 
+
+
+10- For Kubernetes Master Node enable these
+    $ sudo microk8s.enable helm3 storage dns registry dashboard ha-cluster ingress
+
+11- $ microk8s kubectl get all --all-namespaces
+   
+12- Get token for login to dashboard
+    $ token=$(sudo microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
+    $ sudo microk8s kubectl -n kube-system describe secret $token
+
+13- # Create alias for most used commands
+    $ sudo snap alias microk8s.kubectl kubectl
+    $ sudo snap alias microk8s.helm3 helm
+
+14- # Check all resources
+    $ microk8s kubectl get all --all-namespaces
+
+15- # To make this node as master node run the following
+    # Then run output on worker nodes
+    
+    $ sudo microk8s.add-node
 
 ----------------------------------------------------------------------------------------
 -- Publish DockerHub Public Repository (on HOST COMPUTER)
@@ -101,79 +153,6 @@ wordpress/
                       # will generate valid Kubernetes manifest files.
   templates/NOTES.txt # OPTIONAL: A plain text file containing short usage notes
 
-
-----------------------------------------------------------------------------------------
----  Install MicroK8S on Ubuntu - Raspberry PI
-----------------------------------------------------------------------------------------
-
-1- First of all, change hostname of Computer
-   $ sudo nano /etc/hostname
-
-2- Edit /boot/firmware/cmdline.txt and add two cgroup property
-   $ sudo nano /boot/firmware/cmdline.txt
-   cgroup_enable=memory cgroup_memory=1
-
-3- $ sudo swapoff -a
-
-4- $ sudo reboot
-
-5- $ sudo snap install microk8s --classic --stable
-
-6- $ sudo usermod -a -G microk8s ubuntu
-   $ sudo chown -f -R ubuntu ~/.kube
-
-7- $ sudo microk8s.start
-
-8- Need to wait for a while....... (sometimes a few minutes)
-
-9- $ sudo apt-get install iptables-persistent
-   $ sudo iptables -P FORWARD ACCEPT
-   $ sudo iptables -A FORWARD -j ACCEPT 
-
-
-10- For Kubernetes Master Node enable these
-    $ sudo microk8s.enable helm3 storage dns registry dashboard ha-cluster ingress
-
-11- $ microk8s kubectl get all --all-namespaces
-
-12- To make this node as master node run the following
-    Then run output on worker nodes
-    
-    $ sudo microk8s.add-node
-   
-13- Get token for login to dashboard
-    $ token=$(sudo microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
-    $ sudo microk8s kubectl -n kube-system describe secret $token
-
-14- Create alias for most used commands
-    $ sudo snap alias microk8s.kubectl kubectl
-    $ sudo snap alias microk8s.helm3 helm
-
-
-----------------------------------------------------------------------------------------
----  Install Gitlab to Kubernetes Cluster - Raspberry PI
-----------------------------------------------------------------------------------------
-
-1- $ kubectl create namespace gitlab-ns
-
-2- $ helm install --namespace gitlab-ns --name gitlab --set externalUrl=http://hello-gitlab.com/ stable/gitlab-ce
-
-3- # Connect to your GitLab dashboard
-
-   # You’ll need to wait 2-10 minutes for GitLab to finish provisioning.
-
-   # One issue at time of writing: the command Helm gives for finding the site’s IP address may not work. Instead, use the following command to find the URL to the new GitLab dashboard:
-
-   echo http://$(kubectl get svc --namespace gitlab-ns gitlab-gitlab-ce -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-4- # It will typically take a few minutes for the new site’s DNS to be ready. After this time, you should be able to visit the new site in your browser.
-
-5- # The first time you access GitLab, you will need to change the root password. Then, you can log in as the root user with the following credentialsvesika / kimlik:
-
-   Username: root
-   Password: the password you created
-   
-
 ----------------------------------------------------------------------------------------
 ---  Install Gitlab on Ubuntu (Externally) - Raspberry PI
 ----------------------------------------------------------------------------------------
@@ -184,9 +163,9 @@ wordpress/
 
 3- $ wget --content-disposition https://packages.gitlab.com/gitlab/gitlab-ce/packages/ubuntu/focal/gitlab-ce_13.8.1-ce.0_arm64.deb/download.deb
 
-4- $ sudo dpkg -i gitlab-ce_13.8.1-ce.0_arm64.deb
+4- $ sudo apt-get install -y libatomic1
 
-5- $ sudo apt-get install -y libatomic1
+5- $ sudo dpkg -i gitlab-ce_13.8.1-ce.0_arm64.deb
 
 6- $ sudo nano /etc/gitlab/gitlab.rb 
    # Change external_url as IP address of Raspberry PI
