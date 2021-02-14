@@ -57,3 +57,95 @@
 
 4- $ docker push helloregistry.com/docker_web_app_velioglu
 
+
+----------------------------------------------------------------------------------------
+--- The Helm Chart File Structure
+----------------------------------------------------------------------------------------
+
+wordpress/
+  Chart.yaml          # A YAML file containing information about the chart
+  LICENSE             # OPTIONAL: A plain text file containing the license for the chart
+  README.md           # OPTIONAL: A human-readable README file
+  values.yaml         # The default configuration values for this chart
+  values.schema.json  # OPTIONAL: A JSON Schema for imposing a structure on the values.yaml file
+  charts/             # A directory containing any charts upon which this chart depends.
+  crds/               # Custom Resource Definitions
+  templates/          # A directory of templates that, when combined with values,
+                      # will generate valid Kubernetes manifest files.
+  templates/NOTES.txt # OPTIONAL: A plain text file containing short usage notes
+
+
+----------------------------------------------------------------------------------------
+---  Install MicroK8S on Ubuntu - Raspberry PI
+----------------------------------------------------------------------------------------
+
+1- First of all, change hostname of Computer
+   $ sudo nano /etc/hostname
+
+2- Edit /boot/firmware/cmdline.txt and add two cgroup property
+   $ sudo nano /boot/firmware/cmdline.txt
+   cgroup_enable=memory cgroup_memory=1
+
+3- $ sudo swapoff -a
+
+4- $ sudo reboot
+
+5- $ sudo snap install microk8s --classic --stable
+
+6- $ sudo usermod -a -G microk8s ubuntu
+   $ sudo chown -f -R ubuntu ~/.kube
+
+7- $ sudo microk8s.start
+
+8- Need to wait for a while....... (sometimes a few minutes)
+
+9- $ sudo apt-get install iptables-persistent
+   $ sudo iptables -P FORWARD ACCEPT
+   $ sudo iptables -A FORWARD -j ACCEPT 
+
+
+10- For Kubernetes Master Node enable these
+    $ sudo microk8s.enable helm3 storage dns registry dashboard ha-cluster ingress
+
+11- $ microk8s kubectl get all --all-namespaces
+
+12- To make this node as master node run the following
+    Then run output on worker nodes
+    
+    $ sudo microk8s.add-node
+   
+13- Get token for login to dashboard
+    $ token=$(sudo microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
+    $ sudo microk8s kubectl -n kube-system describe secret $token
+
+14- Create alias for most used commands
+    $ sudo snap alias microk8s.kubectl kubectl
+    $ sudo snap alias microk8s.helm3 helm
+
+----------------------------------------------------------------------------------------
+---  Install Gitlab on Ubuntu - Raspberry PI
+----------------------------------------------------------------------------------------
+
+1- $ sudo apt-get update -y
+
+2- $ cd /tmp  
+
+3- $ wget --content-disposition https://packages.gitlab.com/gitlab/gitlab-ce/packages/ubuntu/focal/gitlab-ce_13.8.1-ce.0_arm64.deb/download.deb
+
+4- $ sudo dpkg -i gitlab-ce_13.8.1-ce.0_arm64.deb
+
+5- $ sudo apt-get install -y libatomic1
+
+6- $ sudo nano /etc/gitlab/gitlab.rb 
+   # Change external_url as IP address of Raspberry PI
+   external_url = {ip-address-of-device}
+   # Reduce the number of running workers to the minimum in order to reduce memory usage
+   puma['worker_processes'] = 2
+   sidekiq['concurrency'] = 9
+   # Turn off monitoring to reduce idle cpu and disk usage
+   prometheus_monitoring['enable'] = false
+
+8- $ sudo gitlab-ctl reconfigure
+
+9- $ sudo gitlab-ctl start
+
