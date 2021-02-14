@@ -1,4 +1,6 @@
+----------------------------------------------------------------------------------------
 -- Change /etc/hosts File (on HOST COMPUTER)
+----------------------------------------------------------------------------------------
 
 1- $ sudo nano /etc/hosts
 
@@ -19,7 +21,10 @@
 
 4- sudo systemctl restart docker
 
+
+----------------------------------------------------------------------------------------
 -- Publish DockerHub Public Repository (on HOST COMPUTER)
+----------------------------------------------------------------------------------------
 
 1- $ cd basic-http-server
 
@@ -28,8 +33,9 @@
 3- $ docker push barisv/docker_web_app_velioglu:arm64_v7
 
 
-
+----------------------------------------------------------------------------------------
 -- Create Secret To Provide HTTPS To Ingress (on MASTER NODE)
+----------------------------------------------------------------------------------------
 
 1- $ openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout tls.key -out tls.crt -subj "/CN=hellodashboard.com" -days 365
 
@@ -38,8 +44,9 @@
 3- $ kubectl get secret hellodashboard.com-tls -n kube-system -o yaml
 
 
-
+----------------------------------------------------------------------------------------
 -- Publish Kubernetes Docker Private Repository (on HOST COMPUTER)
+----------------------------------------------------------------------------------------
 
 1- docker build . -t helloregistry.com/docker_web_app_velioglu:arm64_v7
 
