@@ -63,11 +63,11 @@
 -- Create Secret To Provide HTTPS To Ingress (on MASTER NODE)
 ----------------------------------------------------------------------------------------
 
-1- $ openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout tls.key -out tls.crt -subj "/CN=hellodashboard.com" -days 365
+1- $ openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout tls.key -out tls.crt -subj "/CN=hello-dashboard.com" -days 365
 
-2- $ kubectl create secret tls hellodashboard.com-tls --cert=tls.crt --key=tls.key --namespace=kube-system 
+2- $ kubectl create secret tls hello-dashboard.com-tls --cert=tls.crt --key=tls.key --namespace=kube-system 
 
-3- $ kubectl get secret hellodashboard.com-tls -n kube-system -o yaml
+3- $ kubectl get secret hello-dashboard.com-tls -n kube-system -o yaml
 
 
 ----------------------------------------------------------------------------------------
