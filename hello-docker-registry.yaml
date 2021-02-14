@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-docker-registry
+  namespace: container-registry
+spec:
+  rules:
+    - host: helloregistry.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: registry
+                port:
+                  number: 5000
+            path: /
+            pathType: Prefix
