@@ -149,8 +149,33 @@ wordpress/
     $ sudo snap alias microk8s.kubectl kubectl
     $ sudo snap alias microk8s.helm3 helm
 
+
 ----------------------------------------------------------------------------------------
----  Install Gitlab on Ubuntu - Raspberry PI
+---  Install Gitlab to Kubernetes Cluster - Raspberry PI
+----------------------------------------------------------------------------------------
+
+1- $ kubectl create namespace gitlab-ns
+
+2- $ helm install --namespace gitlab-ns --name gitlab --set externalUrl=http://hello-gitlab.com/ stable/gitlab-ce
+
+3- # Connect to your GitLab dashboard
+
+   # You’ll need to wait 2-10 minutes for GitLab to finish provisioning.
+
+   # One issue at time of writing: the command Helm gives for finding the site’s IP address may not work. Instead, use the following command to find the URL to the new GitLab dashboard:
+
+   echo http://$(kubectl get svc --namespace gitlab-ns gitlab-gitlab-ce -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+4- # It will typically take a few minutes for the new site’s DNS to be ready. After this time, you should be able to visit the new site in your browser.
+
+5- # The first time you access GitLab, you will need to change the root password. Then, you can log in as the root user with the following credentialsvesika / kimlik:
+
+   Username: root
+   Password: the password you created
+   
+
+----------------------------------------------------------------------------------------
+---  Install Gitlab on Ubuntu (Externally) - Raspberry PI
 ----------------------------------------------------------------------------------------
 
 1- $ sudo apt-get update -y
