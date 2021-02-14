@@ -8,6 +8,7 @@
     {MasterNodeIPAddress} hello-world.com
     {MasterNodeIPAddress} hello-dashboard.com
     {MasterNodeIPAddress} hello-registry.com
+    {PI3Address} hello-gitlab.com
 
 3- # Pushing to this insecure registry may fail in some versions of Docker unless the daemon is explicitly configured to trust this registry. To address this we need to edit /etc/docker/daemon.json and add:
     {
