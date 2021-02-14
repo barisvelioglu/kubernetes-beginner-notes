@@ -3,11 +3,21 @@
 1- $ sudo nano /etc/hosts
 
 2- add these lines:
-   {MasterNodeIPAddress} helloworld.com
-   {MasterNodeIPAddress} hellodashboard.com
-   {MasterNodeIPAddress} helloregistry.com
+    {MasterNodeIPAddress} helloworld.com
+    {MasterNodeIPAddress} hellodashboard.com
+    {MasterNodeIPAddress} helloregistry.com
 
+3- Pushing to this insecure registry may fail in some versions of Docker unless the daemon is explicitly configured to trust this registry. To address this we need to edit /etc/docker/daemon.json and add:
+    {
+      "debug": true,
+      "insecure-registries": [
+        "127.0.0.1:5000",
+        "helloregistry.com"
+      ],
+      "experimental": false
+    }
 
+4- sudo systemctl restart docker
 
 -- Publish DockerHub Public Repository (on HOST COMPUTER)
 
