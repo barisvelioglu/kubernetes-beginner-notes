@@ -137,7 +137,7 @@ runners:
   ##
   ## ref: https://docs.gitlab.com/ce/ci/runners/#use-tags-to-limit-the-number-of-jobs-using-the-runner
   ##
-  tags: "arm64" # important to ensure we only run arm64 jobs on the runner.
+  tags: "arm64 development" # important to ensure we only run arm64 jobs on the runner.
 
   ## Specify if jobs without tags should be run.
   ## If not specified, Runner will default to true if no tags were specified. In other case it will
@@ -327,16 +327,16 @@ resources:
 ## Affinity for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
-affinity: # this antiAffinity is set up to ensure runners start on differnt nodes.
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-            - key: "app"
-              operator: In
-              values:
-                - runner # same value as on r.290
-        topologyKey: "kubernetes.io/hostname"
+# affinity: # this antiAffinity is set up to ensure runners start on differnt nodes.
+#   podAntiAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       - labelSelector:
+#           matchExpressions:
+#             - key: "app"
+#               operator: In
+#               values:
+#                 - runner # same value as on r.290
+#         topologyKey: "kubernetes.io/hostname"
 
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
