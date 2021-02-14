@@ -4,12 +4,12 @@
 
 1- $ sudo nano /etc/hosts
 
-2- add these lines:
+2- # add these lines:
     {MasterNodeIPAddress} helloworld.com
     {MasterNodeIPAddress} hellodashboard.com
     {MasterNodeIPAddress} helloregistry.com
 
-3- Pushing to this insecure registry may fail in some versions of Docker unless the daemon is explicitly configured to trust this registry. To address this we need to edit /etc/docker/daemon.json and add:
+3- # Pushing to this insecure registry may fail in some versions of Docker unless the daemon is explicitly configured to trust this registry. To address this we need to edit /etc/docker/daemon.json and add:
     {
       "debug": true,
       "insecure-registries": [
@@ -20,6 +20,32 @@
     }
 
 4- sudo systemctl restart docker
+
+----------------------------------------------------------------------------------------
+-- Set Static IP to Ubuntu Server
+----------------------------------------------------------------------------------------
+
+1 - # Create this file to disable default network config
+    $ sudo nano /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+    
+    network: {config: disabled}
+
+2 - $ sudo nano /etc/netplan/00-installer-config.yaml
+
+    network:
+      version: 2
+      ethernets:
+        eth0:
+          addresses: [{static-ip-you-want-to-set}}/24]
+          gateway4: 192.168.1.1
+          nameservers: 
+            addresses: [8.8.8.8, 8.8.4.4]
+
+3- $ sudo netplan try
+
+4- $ sudo netplan apply
+
+5- $ sudo reboot
 
 
 ----------------------------------------------------------------------------------------
