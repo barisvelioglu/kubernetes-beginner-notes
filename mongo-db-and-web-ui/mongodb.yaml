@@ -10,7 +10,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-Deployment
+  name: mongodb-deployment
   labels:
     app: mongodb
 spec:
