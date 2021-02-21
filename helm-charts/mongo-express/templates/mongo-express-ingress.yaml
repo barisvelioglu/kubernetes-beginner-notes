@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   rules:
-    - host: {{ .Values.ingress.mongo-express-hostname }}
+    - host: {{ .Values.ingress.mongo_express_hostname }}
       http:
         paths:
           - pathType: Prefix
