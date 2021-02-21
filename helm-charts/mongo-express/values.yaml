@@ -1,3 +1,5 @@
+namespace: my-mongo-express
+
 secret:
   mongodb:
     root_username: dXNlcm5hbWU=
