@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-mongoexpress-app
+spec:
+  rules:
+    - host: hello-mongoexpress.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: mongodb-express-service
+                port:
+                  number: 8081
