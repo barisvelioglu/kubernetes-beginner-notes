@@ -4,7 +4,7 @@ metadata:
   name: hello-mongoexpress-app
 spec:
   rules:
-    - host: hello-mongoexpress.com
+    - host: {{ .Values.ingress.mongo-express-hostname }}
       http:
         paths:
           - pathType: Prefix
