@@ -9,4 +9,4 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  mongo-express-hostname: hello-mongoexpress.com
+  mongo_express_hostname: hello-mongoexpress.com
