@@ -1,0 +1,12 @@
+namespace: my-mongo-express
+
+secret:
+  mongodb:
+    root_username: dXNlcm5hbWU=
+    root_password: cGFzc3dvcmQ=
+
+ingress:
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  mongo_express_hostname: hellox-mongoexpress.com
