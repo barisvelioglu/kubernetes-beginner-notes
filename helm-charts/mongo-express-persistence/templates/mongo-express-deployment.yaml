@@ -20,7 +20,7 @@ spec:
         - name: mongodb-express
           image: mongo-express
           volumeMounts:
-            - mountPath: 'data/db'
+            - mountPath: /data/db
               name: mongo-express-storage
           resources:
             limits:
