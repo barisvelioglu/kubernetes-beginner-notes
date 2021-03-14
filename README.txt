@@ -180,3 +180,13 @@ wordpress/
 
 9- $ sudo gitlab-ctl start
 
+----------------------------------------------------------------------------------------
+--- HELM PACKAGE AND INSTALL
+----------------------------------------------------------------------------------------
+
+1- $ cd helm-charts/mongo-express
+
+2- $ helm package .
+
+3- $ helm install {custom-name} {package-name}
+   //helm install mongolomasyon mongo-express-persistence-0.1.0.tgz
