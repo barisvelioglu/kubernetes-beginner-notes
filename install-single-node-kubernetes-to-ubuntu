@@ -1,0 +1,75 @@
+$ sudo apt install build-essential dkms linux-headers-$(uname -r)
+
+Then we can install Devices > INSERT GUEST ADDITOIN CD IMAGE
+
+Then PowerOff Computer
+
+Then PowerOn
+
+
+
+$ sudo apt update
+$ sudo apt install -y apt-transport-https
+
+$ sudo apt install docker.io
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+$ sudo apt install curl
+$ sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg| sudo apt-key add
+
+$ sudo chmod 777 /etc/apt/sources.list.d/
+
+create a file in that locati on
+
+$ cd /etc/apt/sources.list.d
+$ sudo nano kubernetes.list
+
+  deb https://apt.kubernetes.io/ kubernetes-xenial main
+  
+$ sudo apt-get update
+
+$ sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+
+$ sudo swapoff -a
+
+
+I got the same issue during the installation. The kubelet was not running. in the procedure of kubelete installation you must to configure the docker container (I think they have remove this part in the procedure):
+
+sudo mkdir /etc/docker
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+"exec-opts": ["native.cgroupdriver=systemd"],
+"log-driver": "json-file",
+"log-opts": {
+"max-size": "100m"
+},
+"storage-driver": "overlay2"
+}
+EOF
+
+sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+Check if the kubelet became running:
+sudo systemctl status kubelet
+
+The procedure is in:
+
+https://kubernetes.io/docs/setup/production-environment/container-runtimes/#docker
+
+
+$ sudo kubeadm init
+
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  
+ 
+TESTING
+ 
+$ sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+$ sudo kubectl get pods --all-namespaces
